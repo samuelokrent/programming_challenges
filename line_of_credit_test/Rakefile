@@ -1,0 +1,23 @@
+require 'socket'
+
+# should be called every day
+task :update_interest do
+	# connect to CreditLineServer
+	socket = TCPSocket.new('127.0.0.1', 7777)
+	socket.gets
+	# tell server to update interest
+	socket.print "update_interest\n"
+	puts socket.gets.gsub(/\\n/, "\n") + "\n"
+	socket.close
+end
+
+# should be called once per billing period
+task :bill do
+	# connect to CreditLineServer
+	socket = TCPSocket.new('127.0.0.1', 7777)
+	socket.gets
+	# tell server to bill credit lines
+	socket.print "bill\n"
+	puts socket.gets.gsub(/\\n/, "\n") + "\n"
+	socket.close
+end
