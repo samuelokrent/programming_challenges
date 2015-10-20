@@ -1,0 +1,59 @@
+CreditLine.rb contains a CreditLine class that represents lines of credit.
+
+CreditLineServer.rb is a server that maintains a collection of all credit lines. It runs on port 7777.
+
+CreditLineClient.rb is a client that communicates with the CreditLineServer. It can be used to create new credit lines,
+withdraw/make payments on them, update interest values, and bill the lines.
+
+Two rake tasks are defined in the Rakefile. update_interest updates interest on all credit lines, and should be called daily.
+bill bills all credit lines, and should be called once per billing period.
+
+
+Two cron jobs should be set up: 1 daily job to call 'rake update_interest', and one job that runs every 30 days and  
+calls 'rake bill'.
+
+Example:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$ ruby CreditLineServer.rb &
+$ ruby CreditLineClient.rb
+Connected. Enter 'h' for help
+
+h
+Options
+	'h' : prints this message
+	'n <limit> <apr>' : creates new credit line
+	'p [index]' : prints all credit lines, or if idx is given, only that credit line
+	'w <id> <amount>' : withdraws amount from credit line with given id
+	'mp <id> <amount>' : makes payment of amount on credit line with given id
+	'update_interest' : updates interest on all credit lines (should be called daily)
+	'bill' : bills all credit lines, and resets interest (should be called every 30 days)
+	'q' : exits from client
+n 1000 0.35
+Created CreditLine: Limit = 1000, APR = 0.35, Month's interest = 0.00
+
+p
+0: CreditLine: Limit = 1000, APR = 0.35, Month's interest = 0.00
+
+
+w 0 100
+Withdrawing 100.0 from Credit Line 0
+Available Funds: 900.0
+
+p 0
+0: CreditLine: Limit = 1000, APR = 0.35, Month's interest = 0.00
+Transaction History
+2015-10-20 00:05:53 -0500: withdrawal of 100.0
+
+
+mp 0 50      
+Made Payment of 50.0 on Credit Line 0
+Available Funds: 950.0
+
+p 0
+0: CreditLine: Limit = 1000, APR = 0.35, Month's interest = 0.00
+Transaction History
+2015-10-20 00:05:53 -0500: withdrawal of 100.0
+2015-10-20 00:06:11 -0500: payment of 50.0
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

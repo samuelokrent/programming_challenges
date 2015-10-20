@@ -12,6 +12,7 @@ def print_help_message
 	"\t'q' : exits from client\n"
 end
 
+
 # Connect to CreditLineServer
 socket = TCPSocket.new('127.0.0.1', 7777)
 
