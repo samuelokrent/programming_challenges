@@ -1,0 +1,28 @@
+The Factor class contains methods for computing the specified factor output, given an array of integers.
+Computed answers are cached and saved to a file when the program exits.
+
+Usage:
+
+- Command line - 
+$ java Factor 3 21 7 16 4 32
+{3: [], 21: [3,7], 7: [], 16: [4], 4: [], 32: [16,4]}
+
+- From another class -
+int[] array = new int[10];
+// ... fill array ...
+String output = Factor.getFactorsString(array);
+
+Questions
+1. The cache is implemented in Factor.java. While the program is running,
+input/output pairs are stored in a Map. On program close, this map is saved to a text file.
+
+2. Caching/reading from cache is O(1) during program execution, but initializing the cache
+when the program starts, and saving it when it exits, is O(n), where n is the number
+of unique arrays that have been passed as parameters. The performance is optimized if
+many calls to Factor.getFactorsString() are made per program run, as this reduces the impact
+of initialzing the cache from and saving it to a file (So Factor's main method does not 
+benefit from caching very much, as it only makes one call to getFactorsString()).
+
+3. This modification would not change the caching algorithm, as the String versions of the
+inputs and outputs are the only things stored in the cache, and thus a different method
+of computing the output doesn't affect the cache.
